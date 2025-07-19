@@ -1,10 +1,6 @@
 pipeline {
     agent any
     
-    tools {
-        nodejs 'nodejs23'
-    }
-    
     stages {
         stage('Git Checkout') {
             steps {
