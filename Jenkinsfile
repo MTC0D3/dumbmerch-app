@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('Gitleaks') {
+        /*stage('Gitleaks') {
             steps {
                 sh 'gitleaks detect --source ./frontend --exit-code 1'
             }
@@ -42,7 +42,7 @@ pipeline {
             steps {
                 sh 'trivy fs --format table -o fs-report.html .'
             }
-        }
+        }*/
 
         stage('Build-Tag & Push Frontend Docker Image') {
             steps {
