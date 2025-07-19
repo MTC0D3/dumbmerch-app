@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: postgres-staging
+    restart: always
+    environment:
+      POSTGRES_DB: dumbmerch
+      POSTGRES_USER: taofiks
+      POSTGRES_PASSWORD: mtc0d3
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/taofiks/postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taofiks"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: backend-staging
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SECRET_KEY: bolehapaaja
+      PATH_FILE: http://localhost:5000/uploads/
+      EMAIL_SYSTEM: taofik.code@gmail.com
+      PASSWORD_SYSTEM: Taofik020501
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: dumbmerch
+      DB_USER: taofiks
+      DB_PASSWORD: mtc0d3
+      PORT: 5000
+
+  frontend:
+    build: ./frontend
+    container_name: frontend-staging
+    ports:
+      - "3000:80"
+    depends_on: ["backend"]
